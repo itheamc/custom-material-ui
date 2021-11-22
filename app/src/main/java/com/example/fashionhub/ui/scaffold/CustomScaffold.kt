@@ -1,7 +1,5 @@
 package com.example.fashionhub.ui.scaffold
 
-import android.content.res.Configuration
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.*
@@ -214,23 +212,23 @@ private fun CustomScaffoldLayout2(
          */
         layout(layoutWidth, layoutHeight) {
             // For TopBar
-            val topBarPlaceable = subcompose(ScaffoldLayoutContent.TopBar, topBar).mapNotNull {
+            val topBarPlaceables = subcompose(ScaffoldLayoutContent.TopBar, topBar).mapNotNull {
                 it.measure(looseConstraints).takeIf { screenSize == ScreenSize.Compact }
             }
 
-            val topBarHeight = topBarPlaceable.maxByOrNull { it.height }?.height ?: 0
+            val topBarHeight = topBarPlaceables.maxByOrNull { it.height }?.height ?: 0
 
 
             // For Floating Action Button
-            val fabPlaceable =
+            val fabPlaceables =
                 subcompose(ScaffoldLayoutContent.Fab, fab).mapNotNull { measurable ->
                     measurable.measure(looseConstraints)
                         .takeIf { it.height != 0 && it.width != 0 }
                 }
 
-            val fabPlacement = if (fabPlaceable.isNotEmpty()) {
-                val fabWidth = fabPlaceable.maxByOrNull { it.width }!!.width
-                val fabHeight = fabPlaceable.maxByOrNull { it.height }!!.height
+            val fabPlacement = if (fabPlaceables.isNotEmpty()) {
+                val fabWidth = fabPlaceables.maxByOrNull { it.width }!!.width
+                val fabHeight = fabPlaceables.maxByOrNull { it.height }!!.height
                 // FAB distance from the left of the layout, taking into account LTR / RTL
                 val fabLeftOffset = if (fabPosition == FabPosition.End) {
                     if (layoutDirection == LayoutDirection.Ltr) {
@@ -255,7 +253,7 @@ private fun CustomScaffoldLayout2(
             --------------------------
             Navigation Rail Composable
              */
-            val navRailPlaceable =
+            val navRailPlaceables =
                 subcompose(
                     slotId = ScaffoldLayoutContent.NavigationRail,
                     content = navigationBar
@@ -264,7 +262,7 @@ private fun CustomScaffoldLayout2(
                         .takeIf { screenSize != ScreenSize.Compact }
                 }
 
-            val navigationRailWidth = navRailPlaceable.minByOrNull { it.width }?.width ?: 0
+            val navigationRailWidth = navRailPlaceables.maxByOrNull { it.width }?.width ?: 0
 
 
             // For BottomBar Placement
@@ -308,12 +306,12 @@ private fun CustomScaffoldLayout2(
             bodyContentPlaceable.forEach {
                 it.place(navigationRailWidth, topBarHeight)
             }
-            topBarPlaceable.forEach {
+            topBarPlaceables.forEach {
                 it.place(0, 0)
             }
 
             // NavigationRail Placement
-            navRailPlaceable.forEach {
+            navRailPlaceables.forEach {
                 it.place(0, 0)
             }
 
@@ -324,7 +322,7 @@ private fun CustomScaffoldLayout2(
 
             // Explicitly not using placeRelative here as `leftOffset` already accounts for RTL
             fabPlacement?.let { placement ->
-                fabPlaceable.forEach {
+                fabPlaceables.forEach {
                     it.place(placement.left, layoutHeight - fabOffsetFromBottom!!)
                 }
             }
