@@ -1,4 +1,4 @@
-package com.example.fashionhub.ui.scatteredgrid
+package com.example.fashionhub.ui.staggeredgrid
 
 import androidx.compose.foundation.*
 import androidx.compose.runtime.Composable
@@ -127,7 +127,11 @@ internal fun columnStaggeredGridMeasurePolicy(cells: GridCells, gap: Dp) =
 
         // Redefining the constraints by setting minWidth., minHeight and maxWidth
         val looseConstraints =
-            constraints.copy(minWidth = 0, minHeight = 0, maxWidth = itemWidth)
+            constraints.copy(
+                minWidth = 0,
+                minHeight = 0,
+                maxWidth = if (itemWidth > 0) itemWidth else 1
+            )
 
 
         // Arrays to store the height of the each column
@@ -232,9 +236,13 @@ internal fun rowStaggeredGridMeasurePolicy(cells: GridCells, gap: Dp) =
                 (constraints.maxHeight - ((rows + 1) * pixelGap)) / rows
         }
 
-        // Redefining the constraints by setting minWidth., minHeight and maxWidth
+        // Redefining the constraints by setting minWidth, minHeight and maxWidth
         val looseConstraints =
-            constraints.copy(minWidth = 0, minHeight = itemHeight, maxHeight = itemHeight)
+            constraints.copy(
+                minWidth = 0,
+                minHeight = 0,
+                maxHeight = if (itemHeight > 0) itemHeight else 1
+            )
 
 
         // Arrays to store the height of the each column

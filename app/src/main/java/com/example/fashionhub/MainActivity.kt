@@ -48,6 +48,9 @@ class MainActivity : ComponentActivity() {
 //                }
                 FashionHubApp(screenSize)
 //                TestingVerticalSlideInAnim()
+                Column() {
+                    
+                }
             }
         }
     }
