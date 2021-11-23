@@ -19,6 +19,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.fashionhub.ui.grid.Grid
+import com.example.fashionhub.ui.grid.GridType
 import com.example.fashionhub.ui.nav.CustomNavigationBar
 import com.example.fashionhub.ui.staggeredgrid.GridCells
 import com.example.fashionhub.ui.staggeredgrid.GridDirection
@@ -154,20 +156,21 @@ fun FashionHubApp(screenSize: ScreenSize) {
         floatingActionButtonPosition = FabPosition.End,
         content = {
             Log.d("Amit", "FashionHubApp: ${it.toString()}")
-            StaggeredGrid(
+            Grid(
                 modifier = Modifier
 //                    .padding(it)
                     .fillMaxSize(),
-                gridDirection = GridDirection.Vertical,
-                cells = GridCells.Adaptive(170.dp),
+                gridDirection = com.example.fashionhub.ui.grid.GridDirection.Horizontal,
+                gridType = GridType.Normal,
+                cells = com.example.fashionhub.ui.grid.GridCells.Adaptive(170.dp),
 //                cells = GridCells.Fixed(3),
                 gap = 12.dp
             ) {
                 (1 until items).forEachIndexed { _, n ->
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(((n * 10) + 200).dp)
+                            .fillMaxHeight()
+                            .width((Random.nextInt(200) + 200).dp)
                             .clickable(
                                 role = Role.Button
                             ) { }
