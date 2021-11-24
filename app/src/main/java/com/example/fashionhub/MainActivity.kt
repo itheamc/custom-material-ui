@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import com.example.fashionhub.ui.charts.CustomCharts
 import com.example.fashionhub.ui.scaffold.FashionHubApp
 import com.example.fashionhub.ui.scaffold.rememberScreenSize
 import com.example.fashionhub.ui.testing.TestingVerticalSlideInAnim
@@ -46,10 +47,13 @@ class MainActivity : ComponentActivity() {
 //                ) {
 //
 //                }
-                FashionHubApp(screenSize)
+//                FashionHubApp(screenSize)
 //                TestingVerticalSlideInAnim()
-                Column() {
-                    
+                Column {
+                    CustomCharts(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
                 }
             }
         }

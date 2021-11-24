@@ -3,15 +3,16 @@ package com.example.fashionhub.ui.scaffold
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.collectIsDraggedAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +26,8 @@ import com.example.fashionhub.ui.nav.CustomNavigationBar
 import com.example.fashionhub.ui.staggeredgrid.GridCells
 import com.example.fashionhub.ui.staggeredgrid.GridDirection
 import com.example.fashionhub.ui.staggeredgrid.StaggeredGrid
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 @ExperimentalMaterial3Api
@@ -44,11 +47,19 @@ fun FashionHubApp(screenSize: ScreenSize) {
         mutableStateOf(20)
     }
 
+    val scrollState = rememberScrollState()
+
+//    LaunchedEffect(keys = arrayOf(scrollState.value), block = {
+//        if (scrollState.maxValue - scrollState.value == 0) {
+//            items += 20
+//        }
+//    })
+
     CustomScaffold(
         scaffoldState = scaffoldState,
         screenSize = screenSize,
         topBar = {
-            currentScreen.topBar
+            currentScreen.topBar((scrollState.maxValue - scrollState.value).toString())
         },
         navigationBar = {
             CustomNavigationBar(
@@ -160,8 +171,9 @@ fun FashionHubApp(screenSize: ScreenSize) {
                 modifier = Modifier
 //                    .padding(it)
                     .fillMaxSize(),
-                gridDirection = com.example.fashionhub.ui.grid.GridDirection.Horizontal,
-                gridType = GridType.Normal,
+                scrollState = scrollState,
+                gridDirection = com.example.fashionhub.ui.grid.GridDirection.Vertical,
+                gridType = GridType.Staggered,
                 cells = com.example.fashionhub.ui.grid.GridCells.Adaptive(170.dp),
 //                cells = GridCells.Fixed(3),
                 gap = 12.dp
@@ -169,17 +181,19 @@ fun FashionHubApp(screenSize: ScreenSize) {
                 (1 until items).forEachIndexed { _, n ->
                     Box(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .width((Random.nextInt(200) + 200).dp)
+                            .fillMaxWidth()
+                            .height((150 + 200).dp)
                             .clickable(
                                 role = Role.Button
                             ) { }
-                            .background(Color(
-                                alpha = 255,
-                                red = Random.nextInt(256),
-                                green = Random.nextInt(256),
-                                blue = Random.nextInt(256),
-                            )),
+                            .background(
+                                Color(
+                                    alpha = 255,
+                                    red = Random.nextInt(256),
+                                    green = Random.nextInt(256),
+                                    blue = Random.nextInt(256),
+                                )
+                            ),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(text = "This is item $n")

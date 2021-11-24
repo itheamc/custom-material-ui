@@ -15,7 +15,7 @@ import androidx.navigation.NavBackStackEntry
 enum class Screens(
     val label: String,
     val icon: ImageVector,
-    val topBar: @Composable () -> Unit = {},
+    val topBar: @Composable (label: String) -> Unit = {},
     val type: ScreenTypes = ScreenTypes.Secondary
 ) {
     HomeScreen(
@@ -24,7 +24,7 @@ enum class Screens(
         topBar = @Composable {
             SmallTopAppBar(
                 title = {
-                    Text(text = "Home")
+                    Text(text = it)
                 }
             )
         },
